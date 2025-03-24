@@ -88,3 +88,9 @@ Graph::~Graph(){
     }
     delete[] adjacency_List;
 }
+int Graph::getNumVertices() const{
+    return n;
+}
+Node** Graph::getAdjList() const{
+    return adjacency_List;
+}

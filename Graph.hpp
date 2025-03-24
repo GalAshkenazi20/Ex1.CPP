@@ -1,4 +1,5 @@
-#ifndef _GRAPH_HPP_    
+#ifndef _GRAPH_HPP_
+#define _GRAPH_HPP_  
 #include <iostream>
 
 namespace graph{
@@ -20,6 +21,8 @@ namespace graph{
             void addEdge(int u, int v, int w);
             void removeEdge(int u, int v);
             void print_graph();
+            int getNumVertices() const;
+            Node** getAdjList() const;
     };
 }
 #endif
