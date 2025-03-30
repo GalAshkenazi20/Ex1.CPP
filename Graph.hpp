@@ -1,6 +1,7 @@
 #ifndef _GRAPH_HPP_
 #define _GRAPH_HPP_  
 #include <iostream>
+#include "DataStructures.hpp"
 
 namespace graph{
     struct Node{
@@ -14,6 +15,7 @@ namespace graph{
         private: 
             int n;
             Node**  adjacency_List;
+            bool isNegative = false;
         public:
             Graph(int n);
             Graph(int n, Node** adj);
@@ -23,6 +25,7 @@ namespace graph{
             void print_graph();
             int getNumVertices() const;
             Node** getAdjList() const;
+            bool getIsNegative() const;
     };
 }
 #endif

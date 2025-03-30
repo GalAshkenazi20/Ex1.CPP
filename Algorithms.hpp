@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Graph.hpp"
 #include "DataStructures.hpp"
+#include <stdexcept>
 namespace graph{
     class Algorithms{
         public:

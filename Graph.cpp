@@ -16,6 +16,9 @@ Graph::Graph(int n, Node **adj)
 }
 void Graph::addEdge(int u, int v, int w)
 {
+    if(w < 0){
+        isNegative = true;
+    }
     Node *nodeU = new Node(v, w);
     nodeU->next = adjacency_List[u];
     adjacency_List[u] = nodeU;
@@ -65,6 +68,17 @@ void Graph::removeEdge(int u, int v)
             currV = currV->next;
         }
     }
+    isNegative = false;
+    for (int i = 0; i < n; i++) {
+        Node* curr = adjacency_List[i];
+        while (curr != nullptr) {
+            if (curr->weight < 0) {
+                isNegative = true;
+                return;
+            }
+            curr = curr->next;
+        }
+    }
 }
 void Graph::print_graph(){
     for (int i = 0; i < n; i++) {
@@ -93,4 +107,7 @@ int Graph::getNumVertices() const{
 }
 Node** Graph::getAdjList() const{
     return adjacency_List;
+}
+bool Graph::getIsNegative() const{
+    return isNegative;
 }

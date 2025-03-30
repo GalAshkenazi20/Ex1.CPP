@@ -87,3 +87,57 @@ Graph Algorithms::dfs(const Graph &g, int s)
     delete[] visited;
     return dfsTree;
 }
+Graph Algorithms::dijkstra(const Graph& g, int s){
+    if(g.getIsNegative()){
+        throw std::logic_error("Dijkstra cannot run on graph with negative edge weights");
+    }
+    int n = g.getNumVertices();
+    int *dist = new int[n];
+    int *parent = new int[n];
+    int *weightParent = new int[n];
+    for(int i = 0; i < n; i++){
+        dist[i] = 9999;
+        parent[i] = -1;
+        weightParent[i] = 0;
+    }
+    parent[s] = s;
+    dist[s] = 0;
+    MinPriorityQueue mpq(n);
+    mpq.insert(s, 0);
+    while (!mpq.isEmpty())
+    {
+        Pair curr = mpq.extractMin();
+        int u = curr.vertex;
+
+        Node* neighbor = g.getAdjList()[u];
+        while(neighbor != nullptr){
+            int v = neighbor->vertex;
+            int w = neighbor->weight;
+            if (dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                parent[v] = u;
+                weightParent[v] = w;
+
+                if (pq.contains(v)) {
+                    pq.decreaseKey(v, dist[v]);
+                } else {
+                    pq.insert(v, dist[v]);
+                }
+            }
+            neighbor = neighbor->next;
+        }
+
+    }
+    Graph dijkstraTree(n);
+    for (int i = 0; i < n; i++) {
+        if (parent[i] != -1 && parent[i] != i) {
+            dijkstraTree.addEdge(parent[i], i, weightParent[i]);
+        }
+    }
+
+    delete[] dist;
+    delete[] parent;
+    delete[] weightParent;
+    return dijkstraTree;
+    
+}
