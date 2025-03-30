@@ -118,10 +118,10 @@ Graph Algorithms::dijkstra(const Graph& g, int s){
                 parent[v] = u;
                 weightParent[v] = w;
 
-                if (pq.contains(v)) {
-                    pq.decreaseKey(v, dist[v]);
+                if (mpq.contains(v)) {
+                    mpq.decreaseKey(v, dist[v]);
                 } else {
-                    pq.insert(v, dist[v]);
+                    mpq.insert(v, dist[v]);
                 }
             }
             neighbor = neighbor->next;
