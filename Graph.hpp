@@ -4,6 +4,7 @@
 #include "DataStructures.hpp"
 
 namespace graph{
+    
     struct Node{
     int vertex;
     int weight;

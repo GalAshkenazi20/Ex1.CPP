@@ -16,7 +16,12 @@ Graph::Graph(int n, Node **adj)
 }
 void Graph::addEdge(int u, int v, int w)
 {
-    if(w < 0){
+    if (u < 0 || u >= n || v < 0 || v >= n)
+    {
+        throw std::out_of_range("addEdge: Vertex index out of bounds");
+    }
+    if (w < 0)
+    {
         isNegative = true;
     }
     Node *nodeU = new Node(v, w);
@@ -28,6 +33,10 @@ void Graph::addEdge(int u, int v, int w)
 }
 void Graph::removeEdge(int u, int v)
 {
+    if (u < 0 || u >= n || v < 0 || v >= n)
+    {
+        throw std::out_of_range("removeEdge: Vertex index out of bounds");
+    }
     Node *currU = adjacency_List[u];
     if (currU != nullptr && currU->vertex == v)
     {
@@ -69,10 +78,13 @@ void Graph::removeEdge(int u, int v)
         }
     }
     isNegative = false;
-    for (int i = 0; i < n; i++) {
-        Node* curr = adjacency_List[i];
-        while (curr != nullptr) {
-            if (curr->weight < 0) {
+    for (int i = 0; i < n; i++)
+    {
+        Node *curr = adjacency_List[i];
+        while (curr != nullptr)
+        {
+            if (curr->weight < 0)
+            {
                 isNegative = true;
                 return;
             }
@@ -80,34 +92,48 @@ void Graph::removeEdge(int u, int v)
         }
     }
 }
-void Graph::print_graph(){
-    for (int i = 0; i < n; i++) {
+// Function to print the graph
+void Graph::print_graph()
+{
+    for (int i = 0; i < n; i++)
+    {
         std::cout << "Vertex " << i << ": ";
-        Node* current = adjacency_List[i];
-        while (current != nullptr) {
+        Node *current = adjacency_List[i];
+        while (current != nullptr)
+        {
             std::cout << "-> (v:" << current->vertex << ", w:" << current->weight << ") ";
             current = current->next;
         }
         std::cout << std::endl;
     }
 }
-Graph::~Graph(){
-    for(int i = 0; i < n; i++){
-        Node* current = adjacency_List[i];
-        while(current != nullptr){
-            Node* temp  = current;
+// Destructor to free memory
+Graph::~Graph()
+{
+    for (int i = 0; i < n; i++)
+    {
+        Node *current = adjacency_List[i];
+        while (current != nullptr)
+        {
+            Node *temp = current;
             current = current->next;
             delete temp;
         }
     }
     delete[] adjacency_List;
 }
-int Graph::getNumVertices() const{
+//helper function to get the number of vertices
+int Graph::getNumVertices() const
+{
     return n;
 }
-Node** Graph::getAdjList() const{
+//getter for the adjacency list, beacause adjacency_list is private
+Node **Graph::getAdjList() const
+{
     return adjacency_List;
 }
-bool Graph::getIsNegative() const{
+//getter for isNegative, to check if the graph has negative edges(for dijkstra)
+bool Graph::getIsNegative() const
+{
     return isNegative;
 }

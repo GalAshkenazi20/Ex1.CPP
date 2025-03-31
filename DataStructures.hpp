@@ -48,6 +48,7 @@ namespace graph {
         Edge() : u(0), v(0), weight(0) {}
         Edge(int a, int b, int w) : u(a), v(b), weight(w) {}
     };
+    void selectionSort(Edge* edges, int size);
 
     // ===== Pair struct (for MinPriorityQueue) =====
     struct Pair {

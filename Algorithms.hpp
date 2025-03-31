@@ -10,10 +10,11 @@ namespace graph{
             static Graph bfs(const Graph& g, int s);
             static Graph dfs (const Graph& g, int s);
             static Graph dijkstra(const Graph& g, int s);
-            static Graph prim(const Graph& g);
+            static Graph prim(const Graph& g, int randomS);
             static Graph kruskal(const Graph& g);
         private:
         static void dfs_visit(const Graph& g, int u, bool* visited, Graph& dfsTree);     
+        static Edge* extractEdgesFromGraph(const Graph& g, int& edgeCount);
     };
 }
 #endif
