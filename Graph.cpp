@@ -1,5 +1,6 @@
 #include "Graph.hpp"
 using namespace graph;
+//adding to adjacency list the vertices
 Graph::Graph(int n)
 {
     this->n = n;
@@ -9,6 +10,7 @@ Graph::Graph(int n)
         adjacency_List[i] = nullptr;
     }
 }
+// Constructor
 Graph::Graph(int n, Node **adj)
 {
     this->n = n;
@@ -16,23 +18,29 @@ Graph::Graph(int n, Node **adj)
 }
 void Graph::addEdge(int u, int v, int w)
 {
+    // Check if the vertex indices are within bounds
     if (u < 0 || u >= n || v < 0 || v >= n)
     {
         throw std::out_of_range("addEdge: Vertex index out of bounds");
     }
+    //Check if we add a negative edge to the graph and update the variable
     if (w < 0)
     {
         isNegative = true;
     }
+    // Create a new node for the edge and add it to the adjacency list
     Node *nodeU = new Node(v, w);
     nodeU->next = adjacency_List[u];
     adjacency_List[u] = nodeU;
+    //because the graph is undirected, we add the edge for to the other vertex too
     Node *nodeV = new Node(u, w);
     nodeV->next = adjacency_List[v];
     adjacency_List[v] = nodeV;
 }
+// Function to remove an edge from the graph
 void Graph::removeEdge(int u, int v)
 {
+    // Check if the vertex indices are within bounds
     if (u < 0 || u >= n || v < 0 || v >= n)
     {
         throw std::out_of_range("removeEdge: Vertex index out of bounds");

@@ -23,7 +23,7 @@ test: $(TEST_EXEC)
 
 $(TEST_EXEC): $(TEST_SRC)
 	$(CXX) $(CXXFLAGS) -o $(TEST_EXEC) $(TEST_SRC)
-
+#just for good looking
 run-tests: test
 	@echo "🔍 Running tests..."
 	@./$(TEST_EXEC) || { echo '❌ Tests failed!'; exit 1; }
