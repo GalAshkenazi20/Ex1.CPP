@@ -4,6 +4,8 @@ namespace graph
 {
 
     // ===== Queue Implementation =====
+
+    // Constructor for a fixed-size circular queue
     Queue::Queue(int cap)
     {
         capacity = cap;
@@ -13,21 +15,25 @@ namespace graph
         size = 0;
     }
 
+    // Destructor that frees the allocated memory
     Queue::~Queue()
     {
         delete[] arr;
     }
 
+    // Returns true if the queue is empty
     bool Queue::isEmpty() const
     {
         return size == 0;
     }
 
+    // Returns true if the queue is full
     bool Queue::isFull() const
     {
         return size == capacity;
     }
 
+    // Adds a value to the end of the queue
     void Queue::enqueue(int val)
     {
         if (isFull())
@@ -40,6 +46,7 @@ namespace graph
         size++;
     }
 
+    // Removes and returns the value from the front of the queue
     int Queue::dequeue()
     {
         if (isEmpty())
@@ -53,6 +60,7 @@ namespace graph
         return val;
     }
 
+    // Checks if the queue contains a specific value
     bool Queue::contains(int val) const
     {
         for (int i = 0, index = frontIndex; i < size; i++, index = (index + 1) % capacity)
@@ -66,6 +74,8 @@ namespace graph
     }
 
     // ===== UnionFind Implementation =====
+
+    // Constructor that initializes each element as its own set
     UnionFind::UnionFind(int n)
     {
         size = n;
@@ -78,21 +88,24 @@ namespace graph
         }
     }
 
+    // Destructor that frees the memory
     UnionFind::~UnionFind()
     {
         delete[] parent;
         delete[] rank;
     }
 
+    // Finds the representative of the set that x belongs to
     int UnionFind::find(int x)
     {
         if (parent[x] != x)
         {
-            parent[x] = find(parent[x]);
+            parent[x] = find(parent[x]); // path compression
         }
         return parent[x];
     }
 
+    // Unites the sets that contain x and y
     void UnionFind::unite(int x, int y)
     {
         int rootX = find(x);
@@ -116,12 +129,15 @@ namespace graph
         }
     }
 
+    // Returns true if x and y are in the same set
     bool UnionFind::connected(int x, int y)
     {
         return find(x) == find(y);
     }
 
     // ===== MinPriorityQueue Implementation =====
+
+    // Constructor for a min-priority queue with given capacity
     MinPriorityQueue::MinPriorityQueue(int n)
     {
         capacity = n;
@@ -132,22 +148,26 @@ namespace graph
             pos[i] = -1;
     }
 
+    // Destructor that releases heap and position arrays
     MinPriorityQueue::~MinPriorityQueue()
     {
         delete[] heap;
         delete[] pos;
     }
 
+    // Checks if the queue is empty
     bool MinPriorityQueue::isEmpty() const
     {
         return size == 0;
     }
 
+    // Checks if a vertex is already in the queue
     bool MinPriorityQueue::contains(int vertex) const
     {
         return pos[vertex] != -1;
     }
 
+    // Inserts a vertex with its distance into the queue
     void MinPriorityQueue::insert(int vertex, int distance)
     {
         if (pos[vertex] != -1)
@@ -161,6 +181,7 @@ namespace graph
         size++;
     }
 
+    // Updates the distance of a vertex if new distance is smaller
     void MinPriorityQueue::decreaseKey(int vertex, int newDistance)
     {
         int i = pos[vertex];
@@ -171,6 +192,7 @@ namespace graph
         heapifyUp(i);
     }
 
+    // Removes and returns the vertex with the smallest distance
     Pair MinPriorityQueue::extractMin()
     {
         if (isEmpty())
@@ -188,6 +210,7 @@ namespace graph
         return min;
     }
 
+    // Swaps two elements in the heap and updates their positions
     void MinPriorityQueue::swap(int i, int j)
     {
         Pair temp = heap[i];
@@ -197,6 +220,7 @@ namespace graph
         pos[heap[j].vertex] = j;
     }
 
+    // Moves a node up the heap if its priority is better
     void MinPriorityQueue::heapifyUp(int i)
     {
         while (i > 0 && heap[i].distance < heap[(i - 1) / 2].distance)
@@ -206,6 +230,7 @@ namespace graph
         }
     }
 
+    // Moves a node down the heap to restore heap property
     void MinPriorityQueue::heapifyDown(int i)
     {
         int smallest = i;
@@ -224,6 +249,7 @@ namespace graph
         }
     }
 
+    // Sorts the edges array in ascending order using selection sort
     void selectionSort(Edge *edges, int size)
     {
         for (int i = 0; i < size - 1; i++)

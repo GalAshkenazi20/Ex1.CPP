@@ -4,7 +4,20 @@
 #include "Algorithms.hpp"
 #include "DataStructures.hpp"
 using namespace graph;
-
+// Function to check if an edge exists in the graph
+bool hasEdge(const Graph& g, int u, int v, int w = -1) {
+    Node* curr = g.getAdjList()[u];
+    while (curr != nullptr) {
+        if (curr->vertex == v) {
+            if (w == -1 || curr->weight == w) {
+                return true;
+            }
+        }
+        curr = curr->next;
+    }
+    return false;
+}
+//test to check if the queue is working
 TEST_CASE("Queue") {
     Queue q(5);
     CHECK(q.isEmpty());
@@ -32,7 +45,7 @@ TEST_CASE("Queue") {
     CHECK(q.isEmpty());
     
 }
-
+//test to check if the union find is working
 TEST_CASE("UnionFind") {
     UnionFind uf(5);
     CHECK_FALSE(uf.connected(0, 1));
@@ -45,7 +58,7 @@ TEST_CASE("UnionFind") {
     uf.unite(3, 4);
     CHECK(uf.connected(3, 4));
 }
-
+//test to check if the graph is working
 TEST_CASE("Graph") {
     Graph g(5);
     g.addEdge(0, 1, 10);
@@ -69,7 +82,7 @@ TEST_CASE("Graph") {
     }
     CHECK(foundEdge);
 }
-
+//test to check if the alrorithms are working and running without exceptions 
 TEST_CASE("Algorithms") {
     Graph g(5);
     g.addEdge(0, 1, 10);
@@ -89,7 +102,22 @@ TEST_CASE("Algorithms") {
     g2.addEdge(1, 2, 2);
     CHECK_NOTHROW(Algorithms::prim(g2, 0));
 }
+//test to check if dijkstra returns the correct tree
+TEST_CASE("Dijkstra returns correct tree") {
+    Graph g(5);
+    g.addEdge(0, 1, 1);
+    g.addEdge(0, 2, 4);
+    g.addEdge(1, 3, 2);
+    g.addEdge(2, 4, 1);
+    Graph tree = Algorithms::dijkstra(g, 0);
+    CHECK(hasEdge(tree,0, 1));
+    CHECK(hasEdge(tree,0, 2));
+    CHECK(hasEdge(tree,1, 3));
+    CHECK(hasEdge(tree,2, 4));
 
+    CHECK(tree.getNumVertices() == 5);
+}
+//testing to check if min priority queue is working
 TEST_CASE("MinPriorityQueue") {
     MinPriorityQueue mpq(5);
     CHECK(mpq.isEmpty());
@@ -107,7 +135,7 @@ TEST_CASE("MinPriorityQueue") {
     CHECK(min.distance == 20);
     CHECK(mpq.isEmpty());
 }
-
+//testing the sorting algorithm for kruskal
 TEST_CASE("SelectionSort") {
     Edge edges[] = {Edge(0, 1, 10), Edge(0, 2, 6), Edge(0, 3, 5), Edge(1, 3, 15), Edge(2, 3, 4)};
     int size = sizeof(edges) / sizeof(edges[0]);
@@ -118,14 +146,39 @@ TEST_CASE("SelectionSort") {
     CHECK(edges[3].weight == 10);
     CHECK(edges[4].weight == 15);
 }
-
+// Test to check if the graph has negative edges
 TEST_CASE("Graph with Negative Edges") {
     Graph g(5);
-    g.addEdge(0, 1, -10);
+    g.addEdge(0, 1, 2);
     g.addEdge(0, 2, 6);
-    g.addEdge(0, 3, 5);
+    g.addEdge(0, 3, -10);
     g.addEdge(1, 3, 15);
     g.addEdge(2, 3, 4);
-    CHECK(g.getIsNegative());
+    CHECK(g.getIsNegative() == true);
     CHECK_THROWS_AS(Algorithms::dijkstra(g, 0), std::logic_error);
+    
+}
+//test to check if the graph has 1 vertex and no edges
+TEST_CASE("Single node graph") {
+    Graph g(1);
+    Graph bfsTree = Algorithms::bfs(g, 0);
+    Graph dfsTree = Algorithms::dfs(g, 0);
+    Graph dTree = Algorithms::dijkstra(g, 0);
+    Graph pTree = Algorithms::prim(g, 0);
+    Graph kTree = Algorithms::kruskal(g);
+
+    CHECK(bfsTree.getNumVertices() == 1);
+    CHECK(dfsTree.getNumVertices() == 1);
+    CHECK(dTree.getNumVertices() == 1);
+    CHECK(pTree.getNumVertices() == 1);
+    CHECK(kTree.getNumVertices() == 1);
+}
+
+//test checking what will happen if the source vertex is out of range
+TEST_CASE("Source vertex out of range") {
+    Graph g(3);
+    CHECK_THROWS_AS(Algorithms::bfs(g, -1), std::out_of_range);
+    CHECK_THROWS_AS(Algorithms::dfs(g, 5), std::out_of_range);
+    CHECK_THROWS_AS(Algorithms::dijkstra(g, 3), std::out_of_range);
+    CHECK_THROWS_AS(Algorithms::prim(g, -2), std::out_of_range);
 }
