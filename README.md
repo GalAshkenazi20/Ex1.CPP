@@ -109,8 +109,6 @@ This is useful to start with a fresh build or after you're done testing.
 
 ---
 
-These commands make it easy to build, test, debug, and maintain your project without needing to type long compiler commands.
-
 
 
 
